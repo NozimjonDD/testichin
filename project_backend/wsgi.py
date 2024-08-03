@@ -1,5 +1,5 @@
 """
-WSGI config for mininnovation_backend project.
+WSGI config for project_backend project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
