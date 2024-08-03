@@ -4,11 +4,11 @@ Requires=mininapi.mdg.uz-gunicorn.socket
 After=network.target
 
 [Service]
-User=dosherzodbek
+User=developer
 Group=www-data
-WorkingDirectory=/home/dosherzodbek/mininnovation-backend
-ExecStart=/home/dosherzodbek/mininnovation-backend/venv/bin/gunicorn \
-                                        --bind unix:/run/gunicorn2.sock mininnovation-backend.wsgi:application \
+WorkingDirectory=/home/developer/project-backend
+ExecStart=/home/developer/project-backend/venv/bin/gunicorn \
+                                        --bind unix:/run/gunicorn2.sock project-backend.wsgi:application \
                                         --workers 3 \
                                         --reload \
                                         --access-logfile - \
