@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn daemon
+Requires=mininapi.mdg.uz-gunicorn.socket
+After=network.target
+
+[Service]
+User=dosherzodbek
+Group=www-data
+WorkingDirectory=/home/dosherzodbek/mininnovation-backend
+ExecStart=/home/dosherzodbek/mininnovation-backend/venv/bin/gunicorn \
+                                        --bind unix:/run/gunicorn2.sock mininnovation-backend.wsgi:application \
+                                        --workers 3 \
+                                        --reload \
+                                        --access-logfile - \
+
+[Install]
+WantedBy=multi-user.target

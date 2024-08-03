@@ -1,0 +1,51 @@
+server {
+
+        root /var/www/html;
+        client_max_body_size 10M;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+        server_name server.mdg.uz; # managed by Certbot
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                # try_files $uri $uri/ =404;
+
+                proxy_pass http://unix:/run/gunicorn.sock;
+                proxy_set_header Host $host; # important header
+                proxy_set_header X-Forwarded-Host $server_name;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /media/ {
+                alias /home/dir/media/;
+        }
+
+        location /static/ {
+                alias /home/dir/static/;
+        }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/server.mdg.uz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/server.mdg.uz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+server {
+    if ($host = server.mdg.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+        listen 80 ;
+        listen [::]:80 ;
+    server_name server.mdg.uz;
+    return 404; # managed by Certbot
+
+}
